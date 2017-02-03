@@ -36,18 +36,14 @@ foreach($p as $q){
 for($i=0;$i<count($possibles);$i++){
 	$possibles[$i] = array_unique($possibles[$i]);
 	sort($possibles[$i]);
-	//$possibles[$i] = implode(" ",$possibles[$i]);
 }
 
 $as = findAllowedSums($possibles);
 
 
 header("content-type: application/json");
-echo json_encode(["parts"=>$possibles,"sums"=>$as]);
+echo json_encode(array("parts"=>$possibles,"sums"=>$as));
 exit;
-
-
-
 
 
 function permutation($prefix, $str)
@@ -71,8 +67,8 @@ function findParts($boxes,$sum){
 
 	$start   = substr($digits, 0, $boxes);
 	$end     = strrev(substr($digits, -$boxes));
-	$sums    = [];
-	$notsums = [];
+	$sums    = array();
+	$notsums = array();
 
 	for ($i = $start; $i <= $end; $i++) {
 		if (false !== stripos($i, "0")) {
@@ -120,7 +116,7 @@ function findAllowedSumsHelper($prefix, $array)
 function findAllowedSums($possibles)
 {
 	global $allowedSums;
-	$allowedSums = [];
+	$allowedSums = array();
 
 	findAllowedSumsHelper("", $possibles);
 

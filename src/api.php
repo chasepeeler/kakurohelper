@@ -119,7 +119,7 @@ function findAllowedSums($possibles,$sum)
 	$allowedSums = array();
 
 	findAllowedSumsHelper("", $possibles);
-	$s = [];
+	$s = array();
 	for ($i = 0; $i < count($allowedSums); $i++) {
 		$t = str_split($allowedSums[$i]);
 		if(array_sum($t) == $sum) {

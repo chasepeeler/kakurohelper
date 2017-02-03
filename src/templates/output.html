@@ -4,12 +4,24 @@
         <h3>Possible Box Values</h3>
     </div>
 </div>
-<% _.each(rc,function(possible){ %>
+<% _.each(rc.possible,function(possible){ %>
 <div class="row">
     <div class="col-md-12">
         <span style="font-weight: bold">Box #<%- possible.num %>: </span> <%- possible.list.join(" ") %>
         <% if(possible.add.length > 0) { %> <span style="color:green"><span style="font-weight: bold">Add: </span> <%- possible.add.join(" ") %> </span> <% } %>
         <% if(possible.remove.length > 0) { %> <span style="color:red"><span style="font-weight: bold">Remove: </span> <%- possible.remove.join(" ") %> </span> <% } %>
+    </div>
+</div>
+<% }); %>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Possible Sum Components</h3>
+    </div>
+</div>
+<% _.each(rc.sums,function(sums){ %>
+<div class="row">
+    <div class="col-md-12">
+        <%- sums.split("").join("+") %>
     </div>
 </div>
 <% }); %>

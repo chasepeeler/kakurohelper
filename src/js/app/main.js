@@ -57,7 +57,7 @@ define(["jquery", "underscore", "tmpl", "jquery-ui", "bootstrap"], function($, _
 			});
 
 			$.post('api.php',data,function(json){
-				data = [];
+					data = [];
 					$.each(json.parts,function(k,box_list) {
 					var d = {};
 					d.num = k + 1;
@@ -82,8 +82,7 @@ define(["jquery", "underscore", "tmpl", "jquery-ui", "bootstrap"], function($, _
 					}
 					data.push(d);
 				});
-
-				$('#output').html(renderTemplate('output',data));
+				$('#output').html(renderTemplate('output',{possible: data, sums: json.sums}));
 			}).fail(function(){
 				$('#output').html(renderTemplate('error',{message: "Unable to perform calculation"}));
 			});

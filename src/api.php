@@ -1,6 +1,8 @@
 <?php
 
 
+
+
 $p = array();
 
 
@@ -29,14 +31,19 @@ foreach($p as $q){
 	}
 }
 
+
+
 for($i=0;$i<count($possibles);$i++){
 	$possibles[$i] = array_unique($possibles[$i]);
 	sort($possibles[$i]);
 	//$possibles[$i] = implode(" ",$possibles[$i]);
 }
 
+$as = findAllowedSums($possibles);
+
+
 header("content-type: application/json");
-echo json_encode(["parts"=>$possibles,"sums"=>$parts]);
+echo json_encode(["parts"=>$possibles,"sums"=>$as]);
 exit;
 
 
@@ -88,3 +95,44 @@ function findParts($boxes,$sum){
 	return $sums;
 
 }
+
+function findAllowedSumsHelper($prefix, $array)
+{
+	global $allowedSums;
+
+	if (count($array) == 1) {
+		$e = array_shift($array);
+		foreach ($e as $f) {
+			if (false === stripos((string)$prefix, (string)$f)) {
+				$allowedSums[] = $prefix . $f;
+			}
+		}
+	} else {
+		$e = array_shift($array);
+		foreach ($e as $f) {
+			if (false === stripos((string)$prefix, (string)$f)) {
+				findAllowedSumsHelper($prefix . $f, $array);
+			}
+		}
+	}
+}
+
+function findAllowedSums($possibles)
+{
+	global $allowedSums;
+	$allowedSums = [];
+
+	findAllowedSumsHelper("", $possibles);
+
+	for ($i = 0; $i < count($allowedSums); $i++) {
+		$t = str_split($allowedSums[$i]);
+		sort($t);
+		$allowedSums[$i] = implode("", $t);
+	}
+
+	$allowedSums = array_unique($allowedSums);
+
+	return $allowedSums;
+
+}
+

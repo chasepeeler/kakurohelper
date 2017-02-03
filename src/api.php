@@ -39,7 +39,7 @@ for($i=0;$i<count($possibles);$i++){
 }
 
 $as = findAllowedSums($possibles,$_POST['sum']);
-
+sort($as);
 
 header("content-type: application/json");
 echo json_encode(array("parts"=>$possibles,"sums"=>$as));

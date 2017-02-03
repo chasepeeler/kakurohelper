@@ -1,0 +1,13 @@
+.header {
+ font-weight: bold;
+ text-align: center;
+}
+
+#ctnTypeSelectForm {
+ font-size: small;
+}
+
+#ctnTypeSelectForm select {
+ font-size: smaller;
+}
+

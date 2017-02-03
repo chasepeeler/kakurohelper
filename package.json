@@ -1,0 +1,11 @@
+{
+  "name": "apps",
+  "version": "1.0.0",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "request": "^2.79.0",
+    "requirejs": "^2.3.2"
+  },
+  "author": "chase peeler",
+  "license": "ISC"
+}

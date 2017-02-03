@@ -38,7 +38,7 @@ for($i=0;$i<count($possibles);$i++){
 	sort($possibles[$i]);
 }
 
-$as = findAllowedSums($possibles);
+$as = findAllowedSums($possibles,$_POST['sum']);
 
 
 header("content-type: application/json");
@@ -113,20 +113,22 @@ function findAllowedSumsHelper($prefix, $array)
 	}
 }
 
-function findAllowedSums($possibles)
+function findAllowedSums($possibles,$sum)
 {
 	global $allowedSums;
 	$allowedSums = array();
 
 	findAllowedSumsHelper("", $possibles);
-
+	$s = [];
 	for ($i = 0; $i < count($allowedSums); $i++) {
 		$t = str_split($allowedSums[$i]);
-		sort($t);
-		$allowedSums[$i] = implode("", $t);
+		if(array_sum($t) == $sum) {
+			sort($t);
+			$s[$i] = implode("", $t);
+		}
 	}
 
-	$allowedSums = array_unique($allowedSums);
+	$allowedSums = array_unique($s);
 
 	return $allowedSums;
 

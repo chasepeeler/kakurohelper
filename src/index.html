@@ -16,14 +16,20 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12 col-xs-12" id="main">
+			<h1>Kakuro Helper</h1>
+			<hr>
 			<form class="form-inline" id="boxesForm">
 				<div class="form-group">
+					<label for="sum">Sum:</label>
+					<input id="sum" class="form-control" type="number" step="1" min="3" required autofocus>
+				</div>
+				<div class="form-group">
 					<label for="num_boxes">How many boxes?</label>
-					<input type="number" min="2" id="num_boxes" step="1" class="form-control">
+					<input type="number" min="2" id="num_boxes" step="1" class="form-control" required>
 				</div>
 				<button type="submit" class="btn btn-default">Next</button>
 			</form>
-			<form id="numbersForm">
+			<form id="numbersForm" class="form-horizontal">
 
 			</form>
 			<div id="output">

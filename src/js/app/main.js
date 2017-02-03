@@ -5,22 +5,6 @@ define(["jquery", "underscore", "tmpl", "jquery-ui", "bootstrap"], function($, _
 			return 0 === this.lastIndexOf(pattern, 0);
 		}
 	}
-	var defaultAjaxFail = function(jqxhr) {
-		var error = {};
-		if(jqxhr.status == 401) {
-			error.title = "Session Expired";
-			error.text = "Please <a href='/frontend/login/' target='_blank'>login</a> again.";
-		} else {
-			error.title = 'Update Failed';
-			error.text = jqxhr.responseText;
-		}
-		$('#alerts').html(renderTemplate('servererrors', error));
-	};
-
-	var defaultAjaxAlways = function() {
-		$(window).waitdialog('destroy');
-	};
-
 
 
 	var renderTemplate = function(template, data) {
@@ -49,6 +33,7 @@ define(["jquery", "underscore", "tmpl", "jquery-ui", "bootstrap"], function($, _
 			data.numberBox = templates.boxes;
 
 			$('#numbersForm').html(renderTemplate('numbersform',data));
+			$('#box_1').focus();
 			$('#output').html('');
 			return false;
 		});
@@ -57,9 +42,11 @@ define(["jquery", "underscore", "tmpl", "jquery-ui", "bootstrap"], function($, _
 			event.stopPropagation();
 			event.preventDefault();
 
+			$('#output').html(renderTemplate('spinner'));
 
 			var data = {};
-			data.strings = $('#sums').val();
+			data.sum = $('#sum').val();
+			data.num_boxes = $('#num_boxes').val();
 			data.boxes = [];
 			$('.number-box').each(function(key,element){
 				var l = $(element).val();
@@ -71,16 +58,14 @@ define(["jquery", "underscore", "tmpl", "jquery-ui", "bootstrap"], function($, _
 
 			$.post('api.php',data,function(json){
 				data = [];
-				$.each(json,function(k,box_list) {
+					$.each(json.parts,function(k,box_list) {
 					var d = {};
 					d.num = k + 1;
 					d.list = [];
 					d.add = [];
 					d.remove = [];
 					var inputs = $('#box_' + (k + 1)).val();
-					//if(inputs == "") {
-					//	inputs = "123456789";
-					//}
+
 					for(var i = 0; i < box_list.length; i++) {
 						if(-1 == inputs.indexOf(box_list[i])) {
 							d.add.push(box_list[i]);
@@ -99,6 +84,8 @@ define(["jquery", "underscore", "tmpl", "jquery-ui", "bootstrap"], function($, _
 				});
 
 				$('#output').html(renderTemplate('output',data));
+			}).fail(function(){
+				$('#output').html(renderTemplate('error',{message: "Unable to perform calculation"}));
 			});
 
 			return false;

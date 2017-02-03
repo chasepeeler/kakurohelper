@@ -1,10 +1,13 @@
 <?php
 
+
 $p = array();
 
-$strings = preg_split('/\s+/', $_POST['strings']);
-foreach($strings as $string){
-	$string = trim($string);
+
+$parts = findParts($_POST['num_boxes'],$_POST['sum']);
+
+foreach($parts as $part){
+	$string = trim(implode("",$part));
 	permutation("",$string);
 }
 
@@ -33,7 +36,7 @@ for($i=0;$i<count($possibles);$i++){
 }
 
 header("content-type: application/json");
-echo json_encode($possibles);
+echo json_encode(["parts"=>$possibles,"sums"=>$parts]);
 exit;
 
 
@@ -51,5 +54,37 @@ function permutation($prefix, $str)
 			permutation($prefix . $str[$i], substr($str, 0, $i) . substr($str, $i + 1));
 		}
 	}
+
+}
+
+
+function findParts($boxes,$sum){
+	$digits = "123456789";
+
+
+	$start   = substr($digits, 0, $boxes);
+	$end     = strrev(substr($digits, -$boxes));
+	$sums    = [];
+	$notsums = [];
+
+	for ($i = $start; $i <= $end; $i++) {
+		if (false !== stripos($i, "0")) {
+			continue;
+		}
+		$parts = str_split($i);
+		if(count(array_unique($parts)) != count($parts)){
+			continue;
+		}
+		sort($parts);
+		if (!in_array($parts, $sums) && !in_array($parts, $notsums)) {
+			if (array_sum($parts) == $sum) {
+				$sums[] = $parts;
+			} else {
+				$notsums = $parts;
+			}
+		}
+
+	}
+	return $sums;
 
 }
